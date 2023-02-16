@@ -65,7 +65,7 @@ class PrestacionController extends Controller
         if (!$prestacion){
             return  response()->json('No se ha encontrado la prestacion', 422);
         }
-        $v=Validator::make($request,[
+        $v=Validator::make($request->all(),[
             'name'=>'',
             'cuantia'=>'',
         ]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\demandante;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,7 +16,7 @@ class DemandanteController extends Controller
      */
     public function index()
     {
-        $demadantes=Demandante::all();
+        $demadantes = Demandante::all();
         return response()->json($demadantes);
     }
 
@@ -32,12 +33,12 @@ class DemandanteController extends Controller
      */
     public function store(Request $request)
     {
-        $demandante=new Demandante();
-        $demandante->name=$request->name;
-        $demandante->email=$request->email;
-        $demandante->edad=$request->edad;
+        $demandante = new Demandante();
+        $demandante->name = $request->name;
+        $demandante->email = $request->email;
+        $demandante->edad = $request->edad;
         $demandante->save();
-        return response()->json([$demandante , 'Demandante guardado correctamente']);
+        return response()->json([$demandante, 'Demandante guardado correctamente']);
     }
 
     /**
@@ -45,8 +46,8 @@ class DemandanteController extends Controller
      */
     public function show($id)
     {
-        $get=Demandante::find($id)->first();
-        return response()->json([$get,'Se ha encontrado el demandante']);
+        $get = Demandante::find($id)->first();
+        return response()->json([$get, 'Se ha encontrado el demandante']);
     }
 
     /**
@@ -62,20 +63,20 @@ class DemandanteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $demandante=Demandante::find($id);
-        if (!$demandante){
-            return  response()->json('No se ha encontrado al demandante', 422);
+        $demandante = Demandante::find($id);
+        if (!$demandante) {
+            return response()->json('No se ha encontrado al demandante', 422);
         }
-        $v=Validator::make($request,[
-            'name'=>'',
-            'email'=>'email',
-            'edad'=>'',
+        $v = Validator::make($request->all(), [
+            'name' => '',
+            'email' => 'email',
+            'edad' => '',
         ]);
-        if ($v->fails()){
-            return  response()->json(['errors'=>$v->errors()],422);
+        if ($v->fails()) {
+            return response()->json(['errors' => $v->errors()], 422);
         }
         $demandante->update($request->all());
-        return response()->json([$demandante,'Se ha actualizado el demandante']);
+        return response()->json([$demandante, 'Se ha actualizado el demandante']);
     }
 
     /**
@@ -83,7 +84,13 @@ class DemandanteController extends Controller
      */
     public function destroy($id)
     {
-        $demandante=Demandante::find($id)->delete();
-        return response()->json([$demandante,'Se ha eliminado el demandante']);
+        $demandante = Demandante::find($id)->delete();
+        return response()->json([$demandante, 'Se ha eliminado el demandante']);
     }
+
+//    public function attach($id)
+//    {
+//        $get = Demandante::find($id)->first();
+//        return response()->json([$get, 'Se ha encontrado el demandante']);
+//    }
 }

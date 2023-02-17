@@ -32,4 +32,5 @@ Route::get('prestacion/{id}',[PrestacionController::class,'show']);
 Route::put('prestacion/{id}',[PrestacionController::class,'update']);
 Route::delete('prestacion/{id}',[PrestacionController::class,'destroy']);
 
-Route::post('demandantes/prestaciones',[PrestacionController::class,'update']);
+Route::post('demandantes/prestaciones',[DemandanteController::class,'attach']);
+Route::delete('demandantes/prestaciones',[DemandanteController::class,'attachDelete']);

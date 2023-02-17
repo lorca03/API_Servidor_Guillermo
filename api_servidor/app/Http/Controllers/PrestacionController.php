@@ -6,6 +6,7 @@ use App\Models\prestacion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class PrestacionController extends Controller
 {
@@ -33,7 +34,7 @@ class PrestacionController extends Controller
     {
         $prestacion=new Prestacion();
         $prestacion->name=$request->name;
-        $prestacion->edad=$request->cuantia;
+        $prestacion->cuantia=$request->cuantia;
         $prestacion->save();
         return response()->json([$prestacion , 'Prestacion guardada correctamente']);
 

@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Demandante extends Model
 {
     use HasFactory;
-    protected $table='demandantes';
+    public $table='demandantes';
     protected $fillable = [
         'name',
         'email',
         'edad'
     ];
     public function prestaciones(){
-        return $this->belongsToMany(Prestacion::class);
+        return $this->belongsToMany(Prestacion::class,'demandantes_prestacion');
     }
 }

@@ -46,8 +46,8 @@ class DemandanteController extends Controller
      */
     public function show($id)
     {
-        $get = Demandante::find($id)->first();
-        return response()->json([$get, 'Se ha encontrado el demandante']);
+        $demandante = Demandante::find($id)->with('prestaciones')->first();
+        return response()->json([$demandante, 'Se ha encontrado el demandante']);
     }
 
     /**
@@ -88,9 +88,38 @@ class DemandanteController extends Controller
         return response()->json([$demandante, 'Se ha eliminado el demandante']);
     }
 
-//    public function attach($id)
-//    {
-//        $get = Demandante::find($id)->first();
-//        return response()->json([$get, 'Se ha encontrado el demandante']);
-//    }
+    public function attach(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'demandante_id' => 'required',
+            'prestacion_id' => 'required',
+        ]);
+        if ($v->fails()) {
+            return response()->json(['errors' => $v->errors()], 422);
+        }
+        $demandante=Demandante::find($request->demandante_id)->first();
+        if (!$demandante){
+            return response()->json(['No se ha encontrado al demandante']);
+        }
+        $demandante->prestaciones()->attach($request->prestacion_id);
+
+        return response()->json(['Se ha creado la relacion']);
+    }
+    public function attachDelete(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'demandante_id' => 'required',
+            'prestacion_id' => 'required',
+        ]);
+        if ($v->fails()) {
+            return response()->json(['errors' => $v->errors()], 422);
+        }
+        $demandante=Demandante::find($request->demandante_id)->first();
+        if (!$demandante){
+            return response()->json(['No se ha encontrado al demandante']);
+        }
+        $demandante->prestaciones()->detach($request->prestacion_id);
+
+        return response()->json(['Se ha borrado la relacion']);
+    }
 }

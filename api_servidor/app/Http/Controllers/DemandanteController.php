@@ -46,8 +46,8 @@ class DemandanteController extends Controller
      */
     public function show($id)
     {
-        $demandante = Demandante::find($id)->with('prestaciones')->first();
-        return response()->json([$demandante, 'Se ha encontrado el demandante']);
+        $demandante = Demandante::where('id',$id)->with('prestaciones')->first();
+        return response()->json([$demandante,'Se ha encontrado el demandante']);
     }
 
     /**
